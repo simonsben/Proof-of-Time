@@ -10,10 +10,11 @@ datetime_format = '%Y-%m-%d %H:%M:%SZ'
 
 def sign_data(private_key, data):
     """
+    Compute an Ed448 signature of the provided data
 
-    :param ed448.Ed448PrivateKey private_key:
-    :param str data:
-    :return bytes:
+    :param ed448.Ed448PrivateKey private_key: Private key object
+    :param str data: Data to be signed (stringified JSON)
+    :return bytes: Signature of the data
     """
 
     return private_key.sign(data.encode())
@@ -21,8 +22,9 @@ def sign_data(private_key, data):
 
 def verify_data(public_key, signature, data):
     """
+    Validate the Ed448 signature against the data provided
 
-    :param ed448.Ed448PublicKey public_key:
+    :param ed448.Ed448PublicKey public_key: Public key object
     :param bytes signature: Signature of data
     :param str data: Data to check for match with signature
     :return bool: Whether the signature and data match
@@ -66,8 +68,8 @@ def create_package(private_key, digest):
     """
     Create a package of info showing a file existed at a given time
 
-    :param ed448.Ed448PrivateKey private_key:
-    :param str digest:
+    :param ed448.Ed448PrivateKey private_key: Private key object
+    :param str digest: SHA-256 digest of the file
     :return dict: Dict with time, digest, and signature
     """
     info = {
@@ -77,7 +79,7 @@ def create_package(private_key, digest):
 
     package = {
         'info': info,
-        'signature': sign_data(private_key, dumps(info)).hex()
+        'signature': sign_data(private_key, dumps(info, default=str)).hex()
     }
 
     return package
@@ -87,11 +89,17 @@ def verify_package(public_key, package):
     """
     Check whether the provided package has been modified
 
-    :param ed448.Ed448PublicKey public_key:
-    :param dict package:
-    :return :
+    :param ed448.Ed448PublicKey public_key: Public key object
+    :param dict package: Package specifying
+    :return bool: Whether the signature is valid
     """
+    if 'signature' not in package:
+        return False
+
     signature = bytes.fromhex(package['signature'])
-    data = dumps(package['info'])
+
+    if 'info' not in package:
+        return False
+    data = dumps(package['info'], default=str)
 
     return verify_data(public_key, signature, data)
