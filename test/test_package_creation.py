@@ -9,6 +9,7 @@ request_data = {
         'include_public_key': True
     }
 }
+print(f'Making request with\n {dumps(request_data)}')
 
 package = handler(request_data, {})
 

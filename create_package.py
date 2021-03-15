@@ -33,4 +33,7 @@ def handler(event, context):
     if 'message' in request_parameters and request_parameters['message']:
         package['message'] = request_parameters['message']
 
-    return package
+    return {
+        'statusCode': 200,
+        'body': package
+    }

@@ -12,6 +12,7 @@ request_data = {
         'package': package
     }
 }
+print(f'Making request with\n {dumps(request_data)}')
 
 verification = handler(request_data, {})
 print(
