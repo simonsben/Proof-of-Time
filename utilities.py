@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from boto3 import client
 from pathlib import Path
 from os import environ
-from json import dumps
+from json import dumps, loads
 
 
 aws_secret_name = 'pit_secret'
@@ -17,6 +17,13 @@ internal_error_response = {
             'body': 'Internal error, please try again later.'
         }
     }
+
+
+def parse_request_parameters(event):
+    if 'queryStringParameters' in event:
+        return event['queryStringParameters']
+    if 'body' in event:
+        return loads(event['body'])
 
 
 def generate_private_key():

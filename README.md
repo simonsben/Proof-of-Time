@@ -23,7 +23,7 @@ The generated package has the following form:
 {
   "info": {
     "datetime": "UTC datetime",
-    "digest": "SHA-256 digest of file"
+    "digest": "SHA3-256 digest of file"
   },
   "signature": "Ed448 signature of the above 'info' block",
   "public_key": "Optional, public key to check signature without returning to the site",

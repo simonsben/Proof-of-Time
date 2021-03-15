@@ -1,15 +1,16 @@
-from utilities import get_private_key, output_public_key
+from utilities import get_private_key, output_public_key, parse_request_parameters
 from core import create_package
 
 
 def handler(event, context):
     """
+    Create package function in the form of an AWS Lambda handler
 
     :param dict event: Web event triggering function
     :param dict context: Information about the execution environment
     :return dict: Package
     """
-    request_parameters = event['queryStringParameters']
+    request_parameters = parse_request_parameters(event)
     if 'digest' not in request_parameters:
         return {
             'statusCode': 400,
@@ -33,7 +34,4 @@ def handler(event, context):
     if 'message' in request_parameters and request_parameters['message']:
         package['message'] = request_parameters['message']
 
-    return {
-        'statusCode': 200,
-        'body': package
-    }
+    return package

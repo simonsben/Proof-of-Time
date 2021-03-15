@@ -1,15 +1,16 @@
 from core import verify_package
-from utilities import get_private_key
+from utilities import get_private_key, parse_request_parameters
 
 
 def handler(event, context):
     """
+    Verify package function in the form of an AWS Lambda handler
 
-    :param dict event:
-    :param dict context:
-    :return dict:
+    :param dict event: Web event triggering function
+    :param dict context: Information about the execution environment
+    :return dict: Verification info
     """
-    request_parameters = event['queryStringParameters']
+    request_parameters = parse_request_parameters(event)
     if 'package' not in request_parameters:
         return {
             'statusCode': 400,
@@ -27,17 +28,11 @@ def handler(event, context):
 
     if verify_package(public_key, package):
         return {
-            'statusCode': 200,
-            'body': {
-                'is_valid': True,
-                'message': 'Signature is valid.'
-            }
+            'is_valid': True,
+            'message': 'Signature is valid.'
         }
 
     return {
-        'statusCode': 200,
-        'body': {
-            'is_valid': False,
-            'message': 'Signature is not valid.'
-        }
+        'is_valid': False,
+        'message': 'Signature is not valid.'
     }
