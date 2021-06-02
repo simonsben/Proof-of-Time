@@ -29,10 +29,10 @@ def handler(event, context):
     if verify_package(public_key, package):
         return {
             'is_valid': True,
-            'message': 'Signature is valid.'
+            'message': 'The proof is valid.'
         }
 
     return {
         'is_valid': False,
-        'message': 'Signature is not valid.'
+        'message': 'The proof is not valid.'
     }

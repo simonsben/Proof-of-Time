@@ -1,4 +1,4 @@
-# Point in time
+# Proof of Time
 
 Idea is to create a service that can guarantee that someone had a file in its current state at some point in time.
 This can be done by making a json string with the digest of the file, and the time it was created.
@@ -46,3 +46,8 @@ To configure this do the following:
 * For the other two grant permission to read the secret and add the environment variable `secret_name` as `pit_secret`
 * Upload and add the layer to each of them
 * Specify the handler for each of the functions (i.e. `lambda_handler.lambda_handler` -> `FILE_NAME.handler`)
+
+
+## Future features
+
+* Cache secret between invocations
